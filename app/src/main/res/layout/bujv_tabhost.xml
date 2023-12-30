@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/widget28"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+		<include layout="@layout/titlebar" />
+		<TabHost android:id="@+id/tabhost" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout android:orientation="vertical" android:background="@drawable/bookshelf_layer"
+			android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+			<TabWidget
+			    android:id="@android:id/tabs"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center"/>
+
+			<FrameLayout android:id="@android:id/tabcontent"
+				android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+				<ListView
+				    android:id="@+id/tab_listview"
+				    android:layout_width="fill_parent"
+				    android:layout_height="fill_parent"
+				    android:cacheColorHint="#00000000" 
+				    android:paddingBottom="50.0dip" />
+
+				            <TextView
+				                android:id="@+id/about"
+				                android:layout_width="fill_parent"
+				                android:layout_height="fill_parent"
+				                android:text="@string/about_info"
+				                android:textColor="#ffffff" />
+
+					<AbsoluteLayout android:id="@+id/mark"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					xmlns:android="http://schemas.android.com/apk/res/android">
+					<ImageButton android:id="@+id/mark_button1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/markbutton2" android:layout_x="220dp"
+					android:layout_y="27dp"> </ImageButton>
+					<ImageButton
+					android:id="@+id/mark_button2" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="打开书签"
+					android:background="@drawable/markbutton2" android:layout_x="220dp"
+					android:layout_y="80dp"> </ImageButton>
+					<ImageButton
+					android:id="@+id/mark_button3" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="打开书签"
+					android:background="@drawable/markbutton2" android:layout_x="220dp"
+					android:layout_y="130dp"> </ImageButton>
+					<ImageButton
+					android:id="@+id/mark_button4" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="打开书签"
+					android:background="@drawable/markbutton2" android:layout_x="220dp"
+					android:layout_y="180dp"> </ImageButton>
+					<ImageButton
+					android:id="@+id/mark_button5" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="打开书签"
+					android:background="@drawable/markbutton2" android:layout_x="220dp"
+					android:layout_y="230dp"> </ImageButton>
+					<ImageView
+					android:id="@+id/widget35" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:layout_x="45dp"
+					android:layout_y="30dp" android:src="@drawable/smallmark">
+					</ImageView> <ImageView android:id="@+id/widget36"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:layout_x="45dp"
+					android:layout_y="80dp" android:src="@drawable/smallmark">
+					</ImageView> <ImageView android:id="@+id/widget37"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:layout_x="45dp"
+					android:layout_y="130dp" android:src="@drawable/smallmark">
+					</ImageView> <ImageView android:id="@+id/widget38"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:layout_x="45dp"
+					android:layout_y="180dp" android:src="@drawable/smallmark">
+					</ImageView> <ImageView android:id="@+id/widget40"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:layout_x="45dp"
+					android:layout_y="230dp" android:src="@drawable/smallmark">
+					</ImageView> <TextView android:id="@+id/marktextview1"
+					android:layout_width="wrap_content"
+android:textSize="14sp" android:textColor="#ffffff"
+					android:layout_height="wrap_content" android:text="阅读记录1"
+					android:layout_x="100dp" android:layout_y="35dp"> </TextView>
+					<TextView android:id="@+id/marktextview2"
+android:textSize="14sp" android:textColor="#ffffff"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="阅读记录2"
+					android:layout_x="100dp" android:layout_y="85dp"> </TextView>
+					<TextView android:id="@+id/marktextview3"
+					android:layout_width="wrap_content"
+					android:textSize="14sp" android:textColor="#ffffff"
+					android:layout_height="wrap_content" android:text="阅读记录3"
+					android:layout_x="100dp" android:layout_y="135dp"> </TextView>
+					<TextView android:id="@+id/marktextview4"
+					android:layout_width="wrap_content"
+					android:textSize="14sp" android:textColor="#ffffff"
+					android:layout_height="wrap_content" android:text="阅读记录4"
+					android:layout_x="100dp" android:layout_y="185dp"> </TextView>
+					<TextView android:id="@+id/marktextview5"
+					android:layout_width="wrap_content"
+					android:textSize="14sp" android:textColor="#ffffff"
+					android:layout_height="wrap_content" android:text="阅读记录5"
+					android:layout_x="100dp" android:layout_y="235dp"> </TextView>
+										</AbsoluteLayout>
+			</FrameLayout>
+		</LinearLayout>
+	</TabHost>
+
+</LinearLayout>

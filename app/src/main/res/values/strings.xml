@@ -1,3 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">EBookDemo</string>
+    <string name="hello">Hello World, StarActivey!</string>
+    <string name="app_name">亲子活动</string>
+<string name="ditemin">确定</string>
+<string name="calalog">目录浏览</string>
+<string name="mark">阅读记录</string>
+<string name="savetomark">添加记录</string>
+<string name="set">设置</string>
+<string name="toast1">提示</string>
+<string name="cancel">取消</string>
+<string name="app_title">亲子活动</string>  
+<string name="app_title2">亲子活动</string>  
+<string name="app_img">图片</string>  
+<string name="about">阅读说明</string>  
+<string name="about_info">"
+
+ 				使用帮助：
+ 				
+				1.在内容阅读页按下菜单，可以进行更改字体、
+				上一章、下一章、添加阅读记录等操作。
+				2.阅读页向下轻滑即可阅读，一页阅后请向左
+				轻滑即可。
+				3.返回键可返回章节目录，按两次即可退出。
+				
+				软件说明：
+				
+				1.小状元宝宝早教电子书系列-50种亲子活动
+				2.作者：王成溥 
+				3.E-MAIL:wangbiad@163.com 
+				4.电子书内容均来自互联网，仅供研究学习使用，
+				请勿传阅，版权归作者和出版单位所有，请于下
+				载后24小时内删除。
+				5.如果对本系列电子书感兴趣，可发送邮件索
+				取APK文件，如果想定制电子书也可联系我们。
+				"</string>
+			
 </resources>

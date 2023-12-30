@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
+	<!-- Copyright (C) 2007 The Android Open Source Project -->
+
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+	<color name="white">#ffffff</color>
+	<color name="red">#D72A2A</color>
+	<color name="black">#000000</color>
+	<color name="purple_start">#9b256b</color>
+	<color name="purple_end">#5d2761</color>
+		<color name="purple_red">#f20038</color>
+
+	<!-- 427BBA, 0f93b8 -->
+	<color name="blue_start">#0f93b8</color>
+	<color name="blue_end">#0f93b8</color>
+	<color name="lgrey_start">#BFC0C0</color>
+	<color name="lgrey_end">#AEB2B7</color>
+	<color name="dgrey_start">#4E4F50</color>
+	<color name="dgrey_end">#2C3137</color>
+	<color name="item_grey_start">#B4B8BA</color>
+	<color name="item_grey_end">#62707C</color>
+	<color name="black_start">#333333</color>
+	<color name="black_end">#181818</color>
+	<color name="grey_start">#CBCBCB</color>
+	<color name="grey_end">#8C9DAE</color>
+	<color name="blue_badges_mayor">#095b72</color>
+	<color name="vlgrey">#EEEEEE</color>
+	<color name="color_score_list_adapter_highlight">#EEEEEE</color>
+	<color name="color_score_mayor_section_background">#DDDDDD</color>
+	<color name="color_bright_green">#a6da00</color>
+	<color name="tip_detail_actions_background">#c7c7c7</color>
+	<color name="user_details_activity_general">#FF5555</color>
+	<color name="transparent">#00000000</color>
+	<color name="titletextcolor">#ffffff</color>
+	<color name="bcakgrund">#eeeeee</color>
+
 </resources>
