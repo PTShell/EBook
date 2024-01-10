@@ -8,13 +8,11 @@ import java.util.Map;
 
 public class StoreageData extends Activity {
     Context context;
-
-    public StoreageData(Context context) {
-        this.context = context;
-    }//www.javaapk.com
-
     SharedPreferences.Editor settings = null;
     SharedPreferences uiState = null;
+    public StoreageData(Context context) {
+        this.context = context;
+    }
 
     public void setDate(String spkey, String key, String value) {
         uiState = context.getSharedPreferences(spkey, 0);

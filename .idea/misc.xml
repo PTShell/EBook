@@ -3,7 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/drawable/category_selector.xml" value="0.1955" />
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/drawable/tab_main_nav_text_selector.xml" value="0.1955" />
         <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/layout/bujv_tabhost.xml" value="0.35280797101449274" />
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/layout/common_info_item_view.xml" value="0.35280797101449274" />
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/layout/fav.xml" value="0.35280797101449274" />
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/layout/fav_item.xml" value="0.35280797101449274" />
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/layout/gridview_menu.xml" value="0.35280797101449274" />
+        <entry key="..\:/AndroidStudioProjects/EBookDemo/app/src/main/res/layout/item_menu.xml" value="0.35280797101449274" />
       </map>
     </option>
   </component>

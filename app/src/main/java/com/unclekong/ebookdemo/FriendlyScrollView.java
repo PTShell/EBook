@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 public class FriendlyScrollView extends ScrollView {
-
     GestureDetector gestureDetector;
 
     public FriendlyScrollView(Context context) {
@@ -18,7 +17,7 @@ public class FriendlyScrollView extends ScrollView {
         super(context, attrs);
     }
 
-    //www.javaapk.com
+
     public FriendlyScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -39,5 +38,4 @@ public class FriendlyScrollView extends ScrollView {
         super.dispatchTouchEvent(ev);
         return true;
     }
-
 }

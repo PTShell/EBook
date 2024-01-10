@@ -52,7 +52,6 @@ public class AnimationControl {
 
     //for the previous movement
     public static Animation inFromUpAnimation() {
-//www.javaapk.com
         Animation inFromUp = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f

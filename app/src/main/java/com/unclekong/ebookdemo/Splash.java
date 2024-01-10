@@ -19,14 +19,14 @@ public class Splash extends View implements Runnable {
     float sw, sh;
     Matrix matrix = new Matrix();
     Bitmap newBitmap2;
-    //�����Ǵ������ͼƬ��,���硰������Щ�¶����������֣��������6
+    //这里是存放文字图片的,例如“明朝那些事儿”有六个字，下面就填6
     Bitmap frames[] = new Bitmap[3];
     Bitmap newFrames[] = new Bitmap[3];
     int[] alf = new int[4];
     int btween;
     int scrWidth, scrHeight;
 
-    //www.javaapk.com
+
     public Splash(StarActivey activey) {
         super(activey);
         this.activiy = activey;
@@ -34,6 +34,28 @@ public class Splash extends View implements Runnable {
         scrHeight = activiy.scrHeight;
         init();
 
+    }
+
+    // 获得半透明图片，透明度从0到10共分为11个等级
+    public static final Bitmap alfImage(Bitmap img, int alf) {
+        if (img == null) {
+            System.out.println("alfImage");
+            return null;
+        }
+        if (alf < 0)
+            alf = 0;
+        else if (alf > 10)
+            alf = 10;
+        int imgW = img.getWidth();
+        int imgH = img.getHeight();
+        int[] RGBData = new int[imgW * imgH];
+        img.getPixels(RGBData, 0, imgW, 0, 0, imgW, imgH);
+        int tmp = ((alf * 255 / 10) << 24) | 0x00ffffff;
+        for (int i = 0; i < RGBData.length; i++)
+            RGBData[i] &= tmp;
+        Bitmap bitmap = Bitmap.createBitmap(RGBData, imgW, imgH,
+                Bitmap.Config.ARGB_8888);
+        return bitmap;
     }
 
     public void init() {
@@ -91,7 +113,7 @@ public class Splash extends View implements Runnable {
         thread.start();
     }
 
-    public Bitmap getBitmap(int BitmapId) {// ��ȡͼƬ��Դ
+    public Bitmap getBitmap(int BitmapId) {// 获取图片资源
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), BitmapId);
         return bitmap;
     }
@@ -119,7 +141,6 @@ public class Splash extends View implements Runnable {
         }
     }
 
-
     public void run() {
         while (isLoop) {
             logic();
@@ -133,28 +154,6 @@ public class Splash extends View implements Runnable {
             }
         }
 
-    }
-
-    // ��ð�͸��ͼƬ��͸���ȴ�0��10����Ϊ11���ȼ�
-    public static final Bitmap alfImage(Bitmap img, int alf) {
-        if (img == null) {
-            System.out.println("alfImage");
-            return null;
-        }
-        if (alf < 0)
-            alf = 0;
-        else if (alf > 10)
-            alf = 10;
-        int imgW = img.getWidth();
-        int imgH = img.getHeight();
-        int[] RGBData = new int[imgW * imgH];
-        img.getPixels(RGBData, 0, imgW, 0, 0, imgW, imgH);
-        int tmp = ((alf * 255 / 10) << 24) | 0x00ffffff;
-        for (int i = 0; i < RGBData.length; i++)
-            RGBData[i] &= tmp;
-        Bitmap bitmap = Bitmap.createBitmap(RGBData, imgW, imgH,
-                Bitmap.Config.ARGB_8888);
-        return bitmap;
     }
 
 }

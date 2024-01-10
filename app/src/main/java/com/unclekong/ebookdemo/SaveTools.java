@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 /**
- * @param  �Լ�ֵ�Եķ�ʽ�洢�Ͷ�ȡ�����������͡���ʵ��Activity������ݴ��ݺ����ݹ���
+ * 以键值对的方式存储和读取基本数据类型。以实现Activity间的数据传递和数据共享；
  */
 public class SaveTools {
-    //www.javaapk.com
+
     public SharedPreferences sharepre;
 
     public SaveTools(Activity activity) {

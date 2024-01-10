@@ -51,61 +51,64 @@ import java.util.List;
 
 public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
 
+    public static int downStatus, useStatus, fileStatus = 0;
+    /*-- MENU菜单选项下标 --*/
+    private final int ITEM_HELP = 0;// 字体大小
+    private final int ITEM_PRE = 1;// 上一张
+    private final int ITEM_NEXT = 2;// 下一章
+    private final int ITEM_SETTING = 3;// 模式切换
+    private final int ITEM_SHUQIAN = 4;// 模式切换
+    String str = null;
+    int screenWidth;
+    int screenHeight;
+    int characterSize = 18;
+    ProgressDialog mDialog;
+    File file;
+    SeekBar seek;
+    Dialog menuDialog;// menu菜单Dialog
+    View menuView;
+    GridView menuGrid;
+    StringBuffer sb = new StringBuffer();// 接受章节内容/
+    String path;
+    String filename;
+    int selectposition;// 当前选择的位置
+    int[] menu_image_array = {R.drawable.menu_help, R.drawable.menu_pre,
+            R.drawable.menu_next, R.drawable.menu_setting, R.drawable.menu_shuqian,};
+    int[] menu_image_array2 = {R.drawable.menu_help, R.drawable.menu_pre,
+            R.drawable.menu_next, R.drawable.menu_setting, R.drawable.menu_shuqian,};
+    String[] menu_name_array = {"字体大小", "上一章", "下一章", "模式切换", " 阅读记录",};
+    String[] menu_name_array2 = {"字体大小", "上一章", "下一章", "模式切换", "阅读记录",};
+    int sign = 0;
     private ViewFlipper viewFlipper;
     private String[] descriptionsArray;
     private int position;
     private TextView textViewContent;
     private FriendlyScrollView scroll;
     private LayoutInflater mInflater;
-    //www.javaapk.com
     private GestureDetector gestureDetector;
-    String str = null;
-    int screenWidth;
-    int screenHeight;
-    int characterSize = 18;
-
-    ProgressDialog mDialog;
-    File file;
-    public static int downStatus, useStatus, fileStatus = 0;
     private boolean flagSize = false;
-    SeekBar seek;
-    Dialog menuDialog;// menu�˵�Dialog
-    View menuView;
-    GridView menuGrid;
-    StringBuffer sb = new StringBuffer();// �����½�����/
-    String path;
-    String filename;
-    int selectposition;// ��ǰѡ���λ��
-    /*-- MENU�˵�ѡ���±� --*/
-    private final int ITEM_HELP = 0;// �����С
-    private final int ITEM_PRE = 1;// ��һ��
-    private final int ITEM_NEXT = 2;// ��һ��
-    private final int ITEM_SETTING = 3;// ģʽ�л�
-    private final int ITEM_SHUQIAN = 4;// ģʽ�л�
     private Boolean flag = false;
     private Boolean mode = false;
     private Boolean flagfrist = true;
-    int[] menu_image_array = {R.drawable.menu_help, R.drawable.menu_pre,
-            R.drawable.menu_next, R.drawable.menu_setting, R.drawable.menu_shuqian,};
-    int[] menu_image_array2 = {R.drawable.menu_help, R.drawable.menu_pre,
-            R.drawable.menu_next, R.drawable.menu_setting, R.drawable.menu_shuqian,};
+    private List<Integer> contentList = new ArrayList<Integer>();// 防止空指针
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
 
-    String[] menu_name_array = {"�����С", "��һ��", "��һ��", "ģʽ�л�", " �Ķ���¼",};
-    String[] menu_name_array2 = {"�����С", "��һ��", "��һ��", "ģʽ�л�", "�Ķ���¼",};
-    private List<Integer> contentList = new ArrayList<Integer>();// ��ֹ��ָ��
+        public boolean onTouch(View v, MotionEvent event) {
 
-    int sign = 0;
+            return gestureDetector.onTouchEvent(event);
+        }
+    };
 
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // �����Ļ�ĸ߶ȺͿ��
+        // 获得屏幕的高度和宽度
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         screenWidth = dm.widthPixels;
         screenHeight = dm.heightPixels;
-        path = Environment.getExternalStorageDirectory().getPath();// ���ϵͳ��·��
-        // ����������
+        path = Environment.getExternalStorageDirectory().getPath();// 获得系统的路径
+        // 获得书的内容
         Bundle bundle = new Bundle();
         bundle = this.getIntent().getExtras();
         selectposition = bundle.getInt("selectedPosition");
@@ -113,16 +116,16 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
         if (position < 0) {
             position = 0;
         }
-        str = bundle.getString("content");// �õ�����
-        filename = bundle.getString("filename");// �õ���ǰ���½�����
-        contentList = bundle.getIntegerArrayList("list");// �õ��½��б�
-        position = 0;// �õ���ǰλ��
+        str = bundle.getString("content");// 得到内容
+        filename = bundle.getString("filename");// 得到当前的章节名字
+        contentList = bundle.getIntegerArrayList("list");// 得到章节列表
+        position = 0;// 得到当前位置
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.common_info_list_view);
-        //���׳�ʼ����ʼ
+        //有米初始化开始
         AdManager.getInstance(this).init("d44ce4152d150f54", "308399787ce9716b", false);
-        //���׳�ʼ������
-        // /��õ�ǰ�½ڵ�λ��////
+        //有米初始化结束
+        // /获得当前章节的位置////
         for (int i = 0; i < contentList.size(); i++) {
             if (selectposition == contentList.get(i)) {
                 Log.i("selectedPosition", String.valueOf(selectposition));
@@ -131,7 +134,7 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
             }
         }
         seek = (SeekBar) findViewById(R.id.seek);
-        seek.setVisibility(8);
+        seek.setVisibility(View.GONE);
         seek.setOnSeekBarChangeListener(LocalMainTurn.this);
         InitUI();
         super.onCreate(savedInstanceState);
@@ -142,24 +145,24 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 switch (arg2) {
-                    case ITEM_HELP:// �����С
+                    case ITEM_HELP:// 字体大小
                         flagSize = !flagSize;
                         if (flagSize) {
                             seek.setVisibility(View.VISIBLE);
                         } else {
-                            seek.setVisibility(8);
+                            seek.setVisibility(View.GONE);
                         }
                         menuDialog.dismiss();
                         break;
-                    case ITEM_PRE:// ��һ��
+                    case ITEM_PRE:// 上一章
                         selectposition = selectposition - 1;
                         if (selectposition < 0) {
                             selectposition = 0;
                         }
-                        Log.i("��һ��11", "��һ��");
+                        Log.i("上一章11", "上一章");
                         Log.i("sign", String.valueOf(sign));
                         if (sign > 0) {
-                            Log.i("��һ��22", "��һ��");
+                            Log.i("上一章22", "上一章");
                             sign--;
                             flag = false;
                             int chid = contentList.get(selectposition);
@@ -168,8 +171,8 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                             BufferedReader br = null;
                             try {
                                 is = getResources().openRawResource(
-                                        Const.filesId[chid]); // ��ȡ��Ӧ���½�
-                                isr = new InputStreamReader(is, "GBK");// ���������GBK�������������
+                                        Const.filesId[chid]); // 读取相应的章节
+                                isr = new InputStreamReader(is, "GBK");// 这里添加了GBK，解决乱码问题
                                 br = new BufferedReader(isr);
                                 while ((str = br.readLine()) != null) {
                                     sb.append(str);
@@ -196,7 +199,7 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                                 }
                             }
                             Toast.makeText(LocalMainTurn.this,
-                                            "��" + (sign + 1) + "��", Toast.LENGTH_SHORT)
+                                            "第" + (sign + 1) + "章", Toast.LENGTH_SHORT)
                                     .show();
 
                             fillDate();
@@ -208,13 +211,13 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                             viewFlipper.showNext();
                             viewFlipper.removeViewAt(0);
                         } else if (sign >= contentList.size() - 1) {
-                            Log.i("��һ��33", "��һ��");
-                            Toast.makeText(LocalMainTurn.this, "û��������",
+                            Log.i("上一章33", "上一章");
+                            Toast.makeText(LocalMainTurn.this, "没有数据啦",
                                     Toast.LENGTH_SHORT).show();
                         }
                         menuDialog.dismiss();
                         break;
-                    case ITEM_NEXT:// ��һ��
+                    case ITEM_NEXT:// 下一章
                         selectposition = selectposition + 1;
                         if (sign < contentList.size() - 1) {
                             sign++;
@@ -226,8 +229,8 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                             BufferedReader br = null;
                             try {
                                 is = getResources().openRawResource(
-                                        Const.filesId[chid]); // ��ȡ��Ӧ���½�
-                                isr = new InputStreamReader(is, "GBK");// ���������GBK�������������
+                                        Const.filesId[chid]); // 读取相应的章节
+                                isr = new InputStreamReader(is, "GBK");// 这里添加了GBK，解决乱码问题
                                 br = new BufferedReader(isr);
                                 while ((str = br.readLine()) != null) {
                                     sb.append(str);
@@ -255,7 +258,7 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                             }
 
                             Toast.makeText(LocalMainTurn.this,
-                                            "��" + (selectposition + 1) + "��", Toast.LENGTH_SHORT)
+                                            "第" + (selectposition + 1) + "章", Toast.LENGTH_SHORT)
                                     .show();
                             fillDate();
                             viewFlipper.addView(getContentView());
@@ -266,12 +269,12 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                             viewFlipper.showNext();
                             viewFlipper.removeViewAt(0);
                         } else if (sign >= contentList.size() - 1) {
-                            Toast.makeText(LocalMainTurn.this, "û��������",
+                            Toast.makeText(LocalMainTurn.this, "没有数据啦",
                                     Toast.LENGTH_SHORT).show();
                         }
                         menuDialog.dismiss();
                         break;
-                    case ITEM_SETTING:// ģʽ�л�
+                    case ITEM_SETTING:// 模式切换
                         mode = !mode;
                         getContentView();
                         viewFlipper.invalidate();
@@ -323,7 +326,7 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                         }
                         menuDialog.dismiss();
                         break;
-                    case ITEM_SHUQIAN:// ģʽ�л�
+                    case ITEM_SHUQIAN:// 模式切换
                         menuDialog.dismiss();
                         break;
                 }
@@ -333,16 +336,16 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
         menuDialog = new Dialog(LocalMainTurn.this, R.style.dialog);
         menuDialog.setContentView(menuView);
         WindowManager m = getWindowManager();
-        Display d = m.getDefaultDisplay(); // Ϊ��ȡ��Ļ����
+        Display d = m.getDefaultDisplay(); // 为获取屏幕宽、高
         WindowManager.LayoutParams lp = menuDialog.getWindow().getAttributes();
-        lp.width = (int) (d.getWidth()); // �������Ϊ��Ļ��0.8
+        lp.width = (int) (d.getWidth()); // 宽度设置为屏幕的0.8
         lp.alpha = 0.9f;
         menuDialog.getWindow().setAttributes(lp);
-        menuDialog.getWindow().setGravity(Gravity.BOTTOM); // ���ÿ��Ҷ���
+        menuDialog.getWindow().setGravity(Gravity.BOTTOM); // 设置靠右对齐
         menuDialog.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(DialogInterface dialog, int keyCode,
                                  KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_MENU)// ��������
+                if (keyCode == KeyEvent.KEYCODE_MENU)// 监听按键
                     dialog.dismiss();
                 return false;
             }
@@ -350,7 +353,7 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
     }
 
     /**
-     * ���ؼ���
+     * 返回监听
      */
     @Override
     public void onBackPressed() {
@@ -378,7 +381,7 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
         int k = 0;//
         int m = 0;
         /*
-         * �ȼ�����ı��ĳ���Ȼ��һ��Ϊ��λ����ÿ�ŵ�����������\n��һ�У���ָ��������һ�� ����ÿ24���ַ�һ�У�ÿ��21��
+         * 先计算出文本的长度然后一张为单位遍历每张的字数，遇到\n算一行，满指定字数算一行 本例每24个字符一行，每张21行
          */
         if (!str.equals(null))
             for (int i = 0; i < str.length(); i++) {
@@ -394,12 +397,12 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
                     m = 1;
                 }
                 k++;
-                // �趨��Ļ��ʾÿ�е�����
+                // 设定屏幕显示每行的字数
                 if (k == screenWidth / characterSize) {
                     j++;
                     k = 0;
                 }
-                // �趨����
+                // 设定行数
                 if (j == screenHeight / ((characterSize))) {
                     j = 0;
 
@@ -418,19 +421,19 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
         if (flagfrist) {
             flagfrist = !flagfrist;
         } else if (!flag) {
-            position = 0;//ȷ���ص��½���ҳ
+            position = 0;//确保回到章节首页
         } else {
-            position = 0;//ȷ���ص��½���ҳ
+            position = 0;//确保回到章节首页
         }
         gestureDetector = new GestureDetector(new CommonGestureListener());
     }
 
     private View getContentView() {
-        // �������adView��ӵ���Ҫչʾ��layout�ؼ���
+        // 将广告条adView添加到需要展示的layout控件中
         LinearLayout adLayout = (LinearLayout) findViewById(R.id.adLayout);
         AdView adView = new AdView(this, AdSize.SIZE_320x50);
         adLayout.addView(adView);
-        //��ʼ�������ͼ������ʹ�������Ĺ��캯�����ù����ͼ�ı���ɫ��͸���ȼ�������ɫ
+        //初始化广告视图，可以使用其他的构造函数设置广告视图的背景色、透明度及字体颜色
 
         View contentView = new View(this);
         contentView = mInflater.inflate(R.layout.common_info_item_view, null);
@@ -458,215 +461,18 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
 
     }
 
-    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-
-        public boolean onTouch(View v, MotionEvent event) {
-
-            return gestureDetector.onTouchEvent(event);
-        }
-    };
-
-    public class CommonGestureListener extends SimpleOnGestureListener {
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-
-            return false;
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-
-            super.onShowPress(e);
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                               float velocityY) {
-            if (e1.getX() - e2.getX() > 100 && Math.abs(velocityX) > 50) {
-                // ����
-                position = position + 1;
-                if (sign < contentList.size() - 1
-                        && !(position < descriptionsArray.length)) {
-                    sign++;
-                    flag = false;
-                    int chid = contentList.get(sign);
-
-                    InputStream is = null;
-                    InputStreamReader isr = null;
-                    BufferedReader br = null;
-                    try {
-                        is = getResources()
-                                .openRawResource(Const.filesId[chid]); // ��ȡ��Ӧ���½�
-                        isr = new InputStreamReader(is, "GBK");// ���������GBK�������������
-                        br = new BufferedReader(isr);
-                        while ((str = br.readLine()) != null) {
-                            sb.append(str);
-                            sb.append('\n');
-                        }
-                        str = sb.toString().trim();
-                        sb.delete(0, sb.length());
-
-                    } catch (FileNotFoundException e3) {
-
-                        e3.printStackTrace();
-                    } catch (UnsupportedEncodingException e) {
-
-                        e.printStackTrace();
-                    } catch (IOException e) {
-
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (br != null) {
-                                br.close();
-                            }
-                            if (isr != null) {
-                                isr.close();
-                            }
-                            if (isr != null) {
-                                is.close();
-                            }
-
-                        } catch (IOException e) {
-
-                            e.printStackTrace();
-                        }
-                    }
-
-                    Toast.makeText(LocalMainTurn.this, "�� " + (sign + 1) + " ��",
-                            Toast.LENGTH_SHORT).show();
-
-                    fillDate();
-                    viewFlipper.addView(getContentView());
-                    viewFlipper.setInAnimation(AnimationControl
-                            .inFromRightAnimation());
-                    viewFlipper.setOutAnimation(AnimationControl
-                            .outToLeftAnimation());
-                    viewFlipper.showNext();
-                    viewFlipper.removeViewAt(0);
-                } else if (sign >= contentList.size() - 1
-                        && position >= descriptionsArray.length) {
-                    position = descriptionsArray.length - 1;
-                    Toast.makeText(LocalMainTurn.this, "û��������",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LocalMainTurn.this,
-                            "�� " + (sign + 1) + " ��" + "--" + "�� " + (position + 1) + " ҳ" + "--" + "���¹� " + (descriptionsArray.length) + " ҳ",
-                            Toast.LENGTH_SHORT).show();
-                    viewFlipper.addView(getContentView());
-                    viewFlipper.setInAnimation(AnimationControl
-                            .inFromRightAnimation());
-                    viewFlipper.setOutAnimation(AnimationControl
-                            .outToLeftAnimation());
-                    viewFlipper.showNext();
-                    viewFlipper.removeViewAt(0);
-                }
-
-            } else if (e2.getX() - e1.getX() > 100 && Math.abs(velocityX) > 50) {
-                // ����
-                position = position - 1;
-                if (sign > 0 && position < 0) {
-                    sign--;
-                    flag = true;
-                    int chid = contentList.get(sign);
-                    InputStream is = null;
-                    InputStreamReader isr = null;
-                    BufferedReader br = null;
-                    try {
-                        is = getResources()
-                                .openRawResource(Const.filesId[chid]); // ��ȡ��Ӧ���½�
-                        isr = new InputStreamReader(is, "GBK");// ���������GBK�������������
-                        br = new BufferedReader(isr);
-                        while ((str = br.readLine()) != null) {
-                            sb.append(str);
-                            sb.append('\n');
-                        }
-                        str = sb.toString().trim();
-                        sb.delete(0, sb.length());
-                        sb.append('\n');
-                    } catch (FileNotFoundException e3) {
-                        e3.printStackTrace();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            br.close();
-                            isr.close();
-                            is.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    Toast.makeText(LocalMainTurn.this, "�� " + (sign + 1) + " �� ",
-                            Toast.LENGTH_SHORT).show();
-                    fillDate();
-                    viewFlipper.addView(getContentView());
-                    viewFlipper.setInAnimation(AnimationControl
-                            .inFromLeftAnimation());
-                    viewFlipper.setOutAnimation(AnimationControl
-                            .outToRightAnimation());
-                    viewFlipper.showNext();
-                    viewFlipper.removeViewAt(0);
-                } else if (sign <= 0 && position < 0) {
-                    position = 0;
-                    Toast.makeText(LocalMainTurn.this, "û��������",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LocalMainTurn.this,
-                            "�� " + (sign + 1) + " ��" + "--" + "�� " + (position + 1) + " ҳ" + "--" + "���¹� " + (descriptionsArray.length) + " ҳ",
-                            Toast.LENGTH_SHORT).show();
-                    viewFlipper.addView(getContentView());
-                    viewFlipper.setInAnimation(AnimationControl
-                            .inFromLeftAnimation());
-                    viewFlipper.setOutAnimation(AnimationControl
-                            .outToRightAnimation());
-                    viewFlipper.showNext();
-                    viewFlipper.removeViewAt(0);
-                }
-            }
-
-            return true;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2,
-                                float distanceX, float distanceY) {
-            return super.onScroll(e1, e2, distanceX, distanceY);
-        }
-
-    }
-
     @Override
     /**
-     * ����MENU
+     * 创建MENU
      */
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("menu");// ���봴��һ��
+        menu.add("menu");// 必须创建一项
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     /**
-     * ����MENU
+     * 拦截MENU
      */
     public boolean onMenuOpened(int featureId, Menu menu) {
         if (menuDialog == null) {
@@ -674,14 +480,14 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
         } else {
             menuDialog.show();
         }
-        return false;// ����Ϊtrue ����ʾϵͳmenu
+        return false;// 返回为true 则显示系统menu
     }
 
     /**
-     * ����˵�Adapter
+     * 构造菜单Adapter
      *
-     * @param menuNameArray      ����
-     * @param imageResourceArray ͼƬ
+     * @param menuNameArray      名称
+     * @param imageResourceArray 图片
      * @return SimpleAdapter
      */
     private SimpleAdapter getMenuAdapter(String[] menuNameArray,
@@ -778,6 +584,195 @@ public class LocalMainTurn extends Activity implements OnSeekBarChangeListener {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    public class CommonGestureListener extends SimpleOnGestureListener {
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+            super.onShowPress(e);
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                               float velocityY) {
+            if (e1.getX() - e2.getX() > 100 && Math.abs(velocityX) > 50) {
+                // 向左
+                position = position + 1;
+                if (sign < contentList.size() - 1
+                        && !(position < descriptionsArray.length)) {
+                    sign++;
+                    flag = false;
+                    int chid = contentList.get(sign);
+
+                    InputStream is = null;
+                    InputStreamReader isr = null;
+                    BufferedReader br = null;
+                    try {
+                        is = getResources()
+                                .openRawResource(Const.filesId[chid]); // 读取相应的章节
+                        isr = new InputStreamReader(is, "GBK");// 这里添加了GBK，解决乱码问题
+                        br = new BufferedReader(isr);
+                        while ((str = br.readLine()) != null) {
+                            sb.append(str);
+                            sb.append('\n');
+                        }
+                        str = sb.toString().trim();
+                        sb.delete(0, sb.length());
+
+                    } catch (FileNotFoundException e3) {
+
+                        e3.printStackTrace();
+                    } catch (UnsupportedEncodingException e) {
+
+                        e.printStackTrace();
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (br != null) {
+                                br.close();
+                            }
+                            if (isr != null) {
+                                isr.close();
+                            }
+                            if (isr != null) {
+                                is.close();
+                            }
+
+                        } catch (IOException e) {
+
+                            e.printStackTrace();
+                        }
+                    }
+
+                    Toast.makeText(LocalMainTurn.this, "第 " + (sign + 1) + " 章",
+                            Toast.LENGTH_SHORT).show();
+
+                    fillDate();
+                    viewFlipper.addView(getContentView());
+                    viewFlipper.setInAnimation(AnimationControl
+                            .inFromRightAnimation());
+                    viewFlipper.setOutAnimation(AnimationControl
+                            .outToLeftAnimation());
+                    viewFlipper.showNext();
+                    viewFlipper.removeViewAt(0);
+                } else if (sign >= contentList.size() - 1
+                        && position >= descriptionsArray.length) {
+                    position = descriptionsArray.length - 1;
+                    Toast.makeText(LocalMainTurn.this, "没有数据啦",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LocalMainTurn.this,
+                            "第 " + (sign + 1) + " 章" + "--" + "第 " + (position + 1) + " 页" + "--" + "本章共 " + (descriptionsArray.length) + " 页",
+                            Toast.LENGTH_SHORT).show();
+                    viewFlipper.addView(getContentView());
+                    viewFlipper.setInAnimation(AnimationControl
+                            .inFromRightAnimation());
+                    viewFlipper.setOutAnimation(AnimationControl
+                            .outToLeftAnimation());
+                    viewFlipper.showNext();
+                    viewFlipper.removeViewAt(0);
+                }
+
+            } else if (e2.getX() - e1.getX() > 100 && Math.abs(velocityX) > 50) {
+                // 向右
+                position = position - 1;
+                if (sign > 0 && position < 0) {
+                    sign--;
+                    flag = true;
+                    int chid = contentList.get(sign);
+                    InputStream is = null;
+                    InputStreamReader isr = null;
+                    BufferedReader br = null;
+                    try {
+                        is = getResources()
+                                .openRawResource(Const.filesId[chid]); // 读取相应的章节
+                        isr = new InputStreamReader(is, "GBK");// 这里添加了GBK，解决乱码问题
+                        br = new BufferedReader(isr);
+                        while ((str = br.readLine()) != null) {
+                            sb.append(str);
+                            sb.append('\n');
+                        }
+                        str = sb.toString().trim();
+                        sb.delete(0, sb.length());
+                        sb.append('\n');
+                    } catch (FileNotFoundException e3) {
+                        e3.printStackTrace();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            br.close();
+                            isr.close();
+                            is.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Toast.makeText(LocalMainTurn.this, "第 " + (sign + 1) + " 章 ",
+                            Toast.LENGTH_SHORT).show();
+                    fillDate();
+                    viewFlipper.addView(getContentView());
+                    viewFlipper.setInAnimation(AnimationControl
+                            .inFromLeftAnimation());
+                    viewFlipper.setOutAnimation(AnimationControl
+                            .outToRightAnimation());
+                    viewFlipper.showNext();
+                    viewFlipper.removeViewAt(0);
+                } else if (sign <= 0 && position < 0) {
+                    position = 0;
+                    Toast.makeText(LocalMainTurn.this, "没有数据啦",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LocalMainTurn.this,
+                            "第 " + (sign + 1) + " 章" + "--" + "第 " + (position + 1) + " 页" + "--" + "本章共 " + (descriptionsArray.length) + " 页",
+                            Toast.LENGTH_SHORT).show();
+                    viewFlipper.addView(getContentView());
+                    viewFlipper.setInAnimation(AnimationControl
+                            .inFromLeftAnimation());
+                    viewFlipper.setOutAnimation(AnimationControl
+                            .outToRightAnimation());
+                    viewFlipper.showNext();
+                    viewFlipper.removeViewAt(0);
+                }
+            }
+
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                float distanceX, float distanceY) {
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
+
     }
 
 }

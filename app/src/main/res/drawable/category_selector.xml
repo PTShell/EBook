@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:state_enabled="true" android:state_pressed="true"
-		android:drawable="@drawable/cat_off" />
-	<item android:state_window_focused="true" android:state_enabled="true"
-		android:state_selected="true" android:drawable="@drawable/cat"
-		android:paddingLeft="55.0dip" />
-	<!-- <item android:drawable="@drawable/cat" /> -->
+    <item android:drawable="@drawable/cat_off" android:state_enabled="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/cat_off" android:paddingLeft="55.0dip" android:state_enabled="true" android:state_selected="true" android:state_window_focused="true" />
+    <!-- <item android:drawable="@drawable/cat" /> -->
 </selector>

@@ -2,18 +2,18 @@
 <resources>
     <string name="hello">Hello World, StarActivey!</string>
     <string name="app_name">亲子活动</string>
-<string name="ditemin">确定</string>
-<string name="calalog">目录浏览</string>
-<string name="mark">阅读记录</string>
-<string name="savetomark">添加记录</string>
-<string name="set">设置</string>
-<string name="toast1">提示</string>
-<string name="cancel">取消</string>
-<string name="app_title">亲子活动</string>  
-<string name="app_title2">亲子活动</string>  
-<string name="app_img">图片</string>  
-<string name="about">阅读说明</string>  
-<string name="about_info">"
+    <string name="ditemin">确定</string>
+    <string name="calalog">目录浏览</string>
+    <string name="mark">阅读记录</string>
+    <string name="savetomark">添加记录</string>
+    <string name="set">设置</string>
+    <string name="toast1">提示</string>
+    <string name="cancel">取消</string>
+    <string name="app_title">亲子活动</string>
+    <string name="app_title2">亲子活动</string>
+    <string name="app_img">图片</string>
+    <string name="about">阅读说明</string>
+    <string name="about_info">"
 
  				使用帮助：
  				
@@ -34,5 +34,5 @@
 				5.如果对本系列电子书感兴趣，可发送邮件索
 				取APK文件，如果想定制电子书也可联系我们。
 				"</string>
-			
+
 </resources>
