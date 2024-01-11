@@ -40,13 +40,12 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class StartActivity extends Activity {
-    public List<ImageView> imageList = new ArrayList<ImageView>();
-    int state;
+    private final List<ImageView> imageList = new ArrayList<ImageView>();
+    private int state;
     int scrWidth, scrHeight;
-    SplashView splash;
-    int curTab = 0;
-    TabHost mTabHost;
-    ListView cagalotlist;
+    private SplashView splash;
+    private TabHost mTabHost;
+    private ListView cagalotlist;
 
     private List<Integer> contentList = new ArrayList<Integer>();// 防止空指针,章节id列表//
     Handler myHandler = new Handler() {// 用来更新UI线程中的控件
@@ -57,7 +56,6 @@ public class StartActivity extends Activity {
                     splash.exit();
                     splash = null;
                 }
-                curTab = 0;
                 creatTableHost();
             } else if (msg.what == 2) {
                 creatTableHost();
@@ -70,8 +68,7 @@ public class StartActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         scrWidth = dm.widthPixels;
@@ -90,7 +87,7 @@ public class StartActivity extends Activity {
     }
 
     // 列表点击后的响应
-    public void selectposition(int arg0, int page) { // 读书操作
+    public void selectposition(int arg0) { // 读书操作
         StringBuffer sb = new StringBuffer();
         InputStream is = null;
         InputStreamReader isr = null;
@@ -120,8 +117,7 @@ public class StartActivity extends Activity {
         Intent newIntent = new Intent();
         Bundle newbundle = new Bundle();
         newbundle.putString("content", sb.toString());// 传递内容
-        newbundle.putIntegerArrayList("list",// 传递章节列表
-                (ArrayList<Integer>) contentList);
+        newbundle.putIntegerArrayList("list", (ArrayList<Integer>) contentList);// 传递章节列表
         newbundle.putInt("child", child);// 得到第一个
         newbundle.putInt("characterSize", 18);// 字体大小
         newbundle.putInt("selectedPosition", arg0);// 选择的位置
@@ -237,7 +233,7 @@ public class StartActivity extends Activity {
         cagalotlist.setAdapter(myAdapter);
         cagalotlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                selectposition(arg2, 0);
+                selectposition(arg2);
             }
         });
     }

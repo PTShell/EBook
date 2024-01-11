@@ -284,33 +284,28 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener {
         int j = 0;//
         int k = 0;//
         int m = 0;
-        /*
-         * 先计算出文本的长度然后一张为单位遍历每张的字数，遇到\n算一行，满指定字数算一行 本例每24个字符一行，每张21行
-         */
-        if (!str.equals(null))
-            for (int i = 0; i < str.length(); i++) {
-                if (m == 0 || str.charAt(i) != '\n') {
-                    sb.append(str.charAt(i));
-                    if (m == 1) m = 0;
-                }
-                if (str.charAt(i) == '\n') {
-                    j++;
-                    k = 0;
-                    m = 1;
-                }
-                k++;
-                // 设定屏幕显示每行的字数
-                if (k == screenWidth / characterSize) {
-                    j++;
-                    k = 0;
-                }
-                // 设定行数
-                if (j == screenHeight / ((characterSize))) {
-                    j = 0;
-                    list.add(sb.toString());
-                    sb.delete(0, sb.length());
-                }
+        //先计算出文本的长度然后一张为单位遍历每张的字数，遇到\n算一行，满指定字数算一行 本例每24个字符一行，每张21行
+        for (int i = 0; i < str.length(); i++) {
+            if (m == 0 || str.charAt(i) != '\n') {
+                sb.append(str.charAt(i));
+                if (m == 1) m = 0;
             }
+            if (str.charAt(i) == '\n') {
+                j++;
+                k = 0;
+                m = 1;
+            }
+            k++;
+            if (k == screenWidth / characterSize) {// 设定屏幕显示每行的字数
+                j++;
+                k = 0;
+            }
+            if (j == screenHeight / ((characterSize))) {// 设定行数
+                j = 0;
+                list.add(sb.toString());
+                sb.delete(0, sb.length());
+            }
+        }
         if (sb.length() != 0) {
             list.add(sb.toString());
             sb.delete(0, sb.length());
@@ -379,8 +374,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener {
      * @param imageResourceArray 图片
      * @return SimpleAdapter
      */
-    private SimpleAdapter getMenuAdapter(String[] menuNameArray,
-                                         int[] imageResourceArray) {
+    private SimpleAdapter getMenuAdapter(String[] menuNameArray, int[] imageResourceArray) {
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
         for (int i = 0; i < menuNameArray.length; i++) {
             HashMap<String, Object> map = new HashMap<String, Object>();
@@ -454,22 +448,18 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             if (e1.getX() - e2.getX() > 100 && Math.abs(velocityX) > 50) {// 向左
                 position = position + 1;
-                if (sign < contentList.size() - 1
-                        && !(position < descriptionsArray.length)) {
+                if (sign < contentList.size() - 1 && !(position < descriptionsArray.length)) {
                     sign++;
                     int chid = contentList.get(sign);
-
                     InputStream is = null;
                     InputStreamReader isr = null;
                     BufferedReader br = null;
                     try {
-                        is = getResources()
-                                .openRawResource(BaseConst.filesId[chid]); // 读取相应的章节
+                        is = getResources().openRawResource(BaseConst.filesId[chid]); // 读取相应的章节
                         isr = new InputStreamReader(is, "GBK");// 这里添加了GBK，解决乱码问题
                         br = new BufferedReader(isr);
                         while ((str = br.readLine()) != null) {
-                            sb.append(str);
-                            sb.append('\n');
+                            sb.append(str).append('\n');
                         }
                         str = sb.toString().trim();
                         sb.delete(0, sb.length());
@@ -492,26 +482,19 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener {
                             }
 
                         } catch (IOException e) {
-
                             e.printStackTrace();
                         }
                     }
-
                     showToast("第 " + (sign + 1) + " 章");
                     fillDate();
                     showNext(false);
-                } else if (sign >= contentList.size() - 1
-                        && position >= descriptionsArray.length) {
+                } else if (sign >= contentList.size() - 1&& position >= descriptionsArray.length) {
                     position = descriptionsArray.length - 1;
                     showToast("没有数据啦");
                 } else {
-                    Toast.makeText(MainActivity.this,
-                            "第 " + (sign + 1) + " 章" + "--" + "第 " + (position + 1) + " 页" + "--" + "本章共 " + (descriptionsArray.length) + " 页",
-                            Toast.LENGTH_SHORT).show();
-
+                    showToast("第 " + (sign + 1) + " 章--第 " + (position + 1) + " 页--本章共 " + (descriptionsArray.length) + " 页");
                     showNext(false);
                 }
-
             } else if (e2.getX() - e1.getX() > 100 && Math.abs(velocityX) > 50) {// 向右
                 position = position - 1;
                 if (sign > 0 && position < 0) {
@@ -524,10 +507,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener {
                         is = getResources().openRawResource(BaseConst.filesId[chid]); // 读取相应的章节
                         isr = new InputStreamReader(is, "GBK");// 这里添加了GBK，解决乱码问题
                         br = new BufferedReader(isr);
-                        while ((str = br.readLine()) != null) {
-                            sb.append(str);
-                            sb.append('\n');
-                        }
+                        while ((str = br.readLine()) != null) sb.append(str).append('\n');
                         str = sb.toString().trim();
                         sb.delete(0, sb.length());
                         sb.append('\n');
@@ -536,7 +516,6 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
-
                         e.printStackTrace();
                     } finally {
                         try {
@@ -547,15 +526,14 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener {
                             e.printStackTrace();
                         }
                     }
-                    Toast.makeText(MainActivity.this, "第 " + (sign + 1) + " 章 ", Toast.LENGTH_SHORT).show();
+                    showToast("第 " + (sign + 1) + " 章 ");
                     fillDate();
                     showNext(true);
                 } else if (sign <= 0 && position < 0) {
                     position = 0;
                     showToast("没有数据啦");
                 } else {
-                    Toast.makeText(MainActivity.this, "第 " + (sign + 1) + " 章--第 " + (position + 1) + " 页--本章共 " + (descriptionsArray.length) + " 页",
-                            Toast.LENGTH_SHORT).show();
+                    showToast("第 " + (sign + 1) + " 章--第 " + (position + 1) + " 页--本章共 " + (descriptionsArray.length) + " 页");
                     showNext(true);
                 }
             }

@@ -6,12 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 
 @SuppressLint("ViewConstructor")
 public class SplashView extends View implements Runnable {
-    String TAG = "SplashView";
     boolean isLoop = false;
     int NumCount = 0;
     StartActivity activiy;
@@ -47,7 +45,7 @@ public class SplashView extends View implements Runnable {
         int[] RGBData = new int[imgW * imgH];
         img.getPixels(RGBData, 0, imgW, 0, 0, imgW, imgH);
         int tmp = ((alf * 255 / 10) << 24) | 0x00ffffff;
-        for (int i = 0; i < RGBData.length; i++)  RGBData[i] &= tmp;
+        for (int i = 0; i < RGBData.length; i++) RGBData[i] &= tmp;
         return Bitmap.createBitmap(RGBData, imgW, imgH, Bitmap.Config.ARGB_8888);
     }
 
@@ -130,7 +128,6 @@ public class SplashView extends View implements Runnable {
     }
 
     public void run() {
-        Log.d(TAG, "testzzw 1111111");
         while (isLoop) {
             logic();
             this.postInvalidate();

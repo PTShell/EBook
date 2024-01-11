@@ -53,22 +53,19 @@
         <activity
             android:name=".StartActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--        <activity android:name=".teatActivity" />-->
-        <!--        <activity android:name=".TestFlip" />-->
-        <!--        <activity android:name=".XmlActivity"></activity>-->
-        <!--        <activity android:name=".LocalTurn"></activity>-->
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="fullSensor" />
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="53798eab56240ba8b60013d1" />
+            android:value="53798eab56240ba8b60013d" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
