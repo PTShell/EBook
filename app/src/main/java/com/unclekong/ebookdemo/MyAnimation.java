@@ -4,7 +4,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
-public class AnimationControl {
+public class MyAnimation {
 
     private static final int ANIMATION_DURATION = 400;
 

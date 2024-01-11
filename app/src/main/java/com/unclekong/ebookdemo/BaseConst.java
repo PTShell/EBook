@@ -1,19 +1,11 @@
 package com.unclekong.ebookdemo;
 
-public class Const {
-    public final static byte MODE_LEFT_TOP = 0x00000000;
-    public final static byte MODE_RIGHT_TOP = 0x00000001;
-    public final static byte MODE_LEFT_BOTTOM = 0x00000002;
-    public final static byte MODE_RIGHT_BOTTOM = 0x00000003;
-    public final static byte MODE_CENTER = 0x00000004;
+public class BaseConst {
+
     public final static byte STATE_SPLASH = 1;
     public final static byte STATE_READER = 4;
     public final static byte STATE_TABHOST = 2;
-    public final static byte STATE_FACE = 3;
 
-    public static final String[] marknames = {"mark1", "mark2", "mark3", "mark4", "mare5"};
-    public static final String[] markPage = {"text1", "text2", "text3", "text4", "text5"};
-    public static final String[] markString = {"str1", "str2", "str3", "str4", "str5",};
     public final static String[] cagalog = {
             "00    50种亲子活动简介", "01    目光的交流", "02    呀呀儿语", "03    母乳喂养",
             "04    教宝宝吐舌头", "05    让宝宝照镜子", "06    呵痒痒小游戏", "07    和宝宝共同分享",
@@ -27,7 +19,7 @@ public class Const {
             "37    寻找“小汪狗”", "38    转起来吧，宝贝", "39    匹配游戏", "40    雨中游戏",
             "41    捕捉昆虫", "42    培养幽默感", "43    穿衣游戏", "44    感知容量", "45    认知颜色",
             "46    干家务", "47    图书馆一游", "48    认识ABC", "49    老玩具新玩法", "50    情感交融"};
-    public static int[] markTextId = new int[5];
+
     public static int[] filesId = {
             R.raw.chapter1, R.raw.chapter2, R.raw.chapter3, R.raw.chapter4, R.raw.chapter5,
             R.raw.chapter6, R.raw.chapter7, R.raw.chapter8, R.raw.chapter9, R.raw.chapter10,

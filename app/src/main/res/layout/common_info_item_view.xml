@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.unclekong.ebookdemo.FriendlyScrollView
+    <com.unclekong.ebookdemo.MyScrollView
         android:id="@+id/scroll"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -22,5 +22,5 @@
             android:singleLine="false"
             android:textColor="#000000"
             android:textSize="14sp" />
-    </com.unclekong.ebookdemo.FriendlyScrollView>
+    </com.unclekong.ebookdemo.MyScrollView>
 </LinearLayout>

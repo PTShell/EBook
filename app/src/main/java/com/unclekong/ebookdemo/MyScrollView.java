@@ -6,19 +6,19 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-public class FriendlyScrollView extends ScrollView {
+public class MyScrollView extends ScrollView {
     GestureDetector gestureDetector;
 
-    public FriendlyScrollView(Context context) {
+    public MyScrollView(Context context) {
         super(context);
     }
 
-    public FriendlyScrollView(Context context, AttributeSet attrs) {
+    public MyScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
 
-    public FriendlyScrollView(Context context, AttributeSet attrs, int defStyle) {
+    public MyScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

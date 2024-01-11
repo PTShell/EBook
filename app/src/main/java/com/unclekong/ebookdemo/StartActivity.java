@@ -13,18 +13,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -43,20 +39,15 @@ import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class StarActivey extends Activity {
+public class StartActivity extends Activity {
     public List<ImageView> imageList = new ArrayList<ImageView>();
-    public TextView[] markTextViews = new TextView[5];
-    boolean isRead = false;
     int state;
     int scrWidth, scrHeight;
-    int curFiles = 0;
-    Splash splash;
+    SplashView splash;
     int curTab = 0;
     TabHost mTabHost;
     ListView cagalotlist;
-    Spinner sp_textColor, sp_backColor, sp_textSize, sp_textStyle;
-    Button setButton;
-    Menu menu;
+
     private List<Integer> contentList = new ArrayList<Integer>();// 防止空指针,章节id列表//
     Handler myHandler = new Handler() {// 用来更新UI线程中的控件
         public void handleMessage(Message msg) {
@@ -64,7 +55,6 @@ public class StarActivey extends Activity {
                 if (splash != null) {
                     splash.isLoop = false;
                     splash.exit();
-
                     splash = null;
                 }
                 curTab = 0;
@@ -74,10 +64,8 @@ public class StarActivey extends Activity {
             } else if (msg.what == 4) {
                 finish();
             }
-
         }
     };
-    private ImageButton[] markButtons = new ImageButton[5];
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,33 +82,25 @@ public class StarActivey extends Activity {
             if (bundle.getInt("curTab") == 1) {
                 creatTableHost();
             } else {
-
                 setSplash();
             }
-        } catch (Exception e) {
-            // TODO: handle exception
+        } catch (Exception e) {// TODO: handle exception
             setSplash();
         }
-
-
     }
 
     // 列表点击后的响应
-    public void selectposition(int arg0, int page) {
-        // 读书操作
+    public void selectposition(int arg0, int page) { // 读书操作
         StringBuffer sb = new StringBuffer();
         InputStream is = null;
         InputStreamReader isr = null;
         BufferedReader br = null;
         String str = null;
         try {
-            is = getResources().openRawResource(Const.filesId[arg0]); // 读取相应的章节
+            is = getResources().openRawResource(BaseConst.filesId[arg0]); // 读取相应的章节
             isr = new InputStreamReader(is, "GBK");// 这里添加了GBK，解决乱码问题
             br = new BufferedReader(isr);
-            while ((str = br.readLine()) != null) {
-                sb.append(str);
-                sb.append('\n');
-            }
+            while ((str = br.readLine()) != null) sb.append(str).append('\n');
             br.close();
             isr.close();
             is.close();
@@ -132,7 +112,7 @@ public class StarActivey extends Activity {
             e.printStackTrace();
         }
         // 用来计算章节用的
-        for (int j = 0; j < Const.filesId.length; j++) {
+        for (int j = 0; j < BaseConst.filesId.length; j++) {
             int cateid = Integer.valueOf(j);
             contentList.add(cateid);
         }
@@ -146,7 +126,7 @@ public class StarActivey extends Activity {
         newbundle.putInt("characterSize", 18);// 字体大小
         newbundle.putInt("selectedPosition", arg0);// 选择的位置
         Log.i("传递selectedPosition", String.valueOf(arg0));
-        newIntent.setClass(StarActivey.this, LocalMainTurn.class);
+        newIntent.setClass(StartActivity.this, MainActivity.class);
         newIntent.putExtras(newbundle);
         startActivity(newIntent);
         finish();
@@ -154,15 +134,14 @@ public class StarActivey extends Activity {
 
     public void setSplash() {
         if (splash == null) {
-            splash = new Splash(this);
+            splash = new SplashView(this);
         }
         setContentView(splash);
-        state = Const.STATE_SPLASH;
+        state = BaseConst.STATE_SPLASH;
     }
 
     public void creatTableHost() {
-        isRead = false;
-        state = Const.STATE_TABHOST;
+        state = BaseConst.STATE_TABHOST;
         setContentView(R.layout.bujv_tabhost);
         mTabHost = (TabHost) findViewById(R.id.tabhost);
         mTabHost.setup();
@@ -245,9 +224,9 @@ public class StarActivey extends Activity {
     private void CreatListView() {
 
         ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
-        for (int i = 0; i < Const.cagalog.length; i++) {
+        for (int i = 0; i < BaseConst.cagalog.length; i++) {
             HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("title", Const.cagalog[i]);
+            map.put("title", BaseConst.cagalog[i]);
 
             map.put("image", R.drawable.cagalog);
             listItem.add(map);
@@ -266,7 +245,7 @@ public class StarActivey extends Activity {
 
     // 如果书签没有存储信息，则以对话框的形式提示
     private void showDialog() {
-        Dialog dialog = new AlertDialog.Builder(StarActivey.this).setTitle(
+        Dialog dialog = new AlertDialog.Builder(StartActivity.this).setTitle(
                         getString(R.string.toast1)).setMessage("当前标签没有存档！")
                 .setPositiveButton(getString(R.string.ditemin),
                         new DialogInterface.OnClickListener() {
@@ -283,7 +262,7 @@ public class StarActivey extends Activity {
     }
 
     private void creatIsExit() {
-        Dialog dialog = new AlertDialog.Builder(StarActivey.this)
+        Dialog dialog = new AlertDialog.Builder(StartActivity.this)
                 .setTitle(getString(R.string.toast1))
                 .setMessage("是否确认退出？建议在退出前保存书签，方便下次阅读！")
                 .setPositiveButton(getString(R.string.ditemin),
@@ -308,7 +287,7 @@ public class StarActivey extends Activity {
     }
 
     private void IsExit() {
-        Dialog dialog = new AlertDialog.Builder(StarActivey.this)
+        Dialog dialog = new AlertDialog.Builder(StartActivity.this)
                 .setTitle(getString(R.string.toast1))
                 .setMessage("是否确认退出？")
                 .setPositiveButton(getString(R.string.ditemin), new DialogInterface.OnClickListener() {
@@ -331,7 +310,7 @@ public class StarActivey extends Activity {
 
         System.out.println("----------------" + state);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (state == Const.STATE_READER) {
+            if (state == BaseConst.STATE_READER) {
                 creatIsExit();
             } else {
                 IsExit();

@@ -6,13 +6,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 @SuppressLint("ViewConstructor")
-public class Splash extends View implements Runnable {
+public class SplashView extends View implements Runnable {
+    String TAG = "SplashView";
     boolean isLoop = false;
     int NumCount = 0;
-    StarActivey activiy;
+    StartActivity activiy;
     Bitmap backBitmap = null;
     Bitmap newBitmap = null;
     Paint p = new Paint();
@@ -22,18 +24,14 @@ public class Splash extends View implements Runnable {
     //这里是存放文字图片的,例如“明朝那些事儿”有六个字，下面就填6
     Bitmap frames[] = new Bitmap[3];
     Bitmap newFrames[] = new Bitmap[3];
-    int[] alf = new int[4];
-    int btween;
     int scrWidth, scrHeight;
 
-
-    public Splash(StarActivey activey) {
+    public SplashView(StartActivity activey) {
         super(activey);
         this.activiy = activey;
         scrWidth = activiy.scrWidth;
         scrHeight = activiy.scrHeight;
         init();
-
     }
 
     // 获得半透明图片，透明度从0到10共分为11个等级
@@ -42,20 +40,15 @@ public class Splash extends View implements Runnable {
             System.out.println("alfImage");
             return null;
         }
-        if (alf < 0)
-            alf = 0;
-        else if (alf > 10)
-            alf = 10;
+        if (alf < 0) alf = 0;
+        else if (alf > 10) alf = 10;
         int imgW = img.getWidth();
         int imgH = img.getHeight();
         int[] RGBData = new int[imgW * imgH];
         img.getPixels(RGBData, 0, imgW, 0, 0, imgW, imgH);
         int tmp = ((alf * 255 / 10) << 24) | 0x00ffffff;
-        for (int i = 0; i < RGBData.length; i++)
-            RGBData[i] &= tmp;
-        Bitmap bitmap = Bitmap.createBitmap(RGBData, imgW, imgH,
-                Bitmap.Config.ARGB_8888);
-        return bitmap;
+        for (int i = 0; i < RGBData.length; i++)  RGBData[i] &= tmp;
+        return Bitmap.createBitmap(RGBData, imgW, imgH, Bitmap.Config.ARGB_8888);
     }
 
     public void init() {
@@ -68,14 +61,11 @@ public class Splash extends View implements Runnable {
         matrix.postScale(sw, sh);
         newBitmap = Bitmap.createBitmap(backBitmap, 0, 0,
                 backBitmap.getWidth(), backBitmap.getHeight(), matrix, true);
-
         isLoop = true;
         start();
-
     }
 
     public void logic() {
-
         if (NumCount <= 10) {
             newBitmap2 = null;
             newBitmap2 = alfImage(newBitmap, NumCount);
@@ -96,7 +86,6 @@ public class Splash extends View implements Runnable {
         if (NumCount >= 50) {
             activiy.myHandler.sendEmptyMessage(1);
         }
-
     }
 
     public void exit() {
@@ -124,7 +113,6 @@ public class Splash extends View implements Runnable {
         super.onDraw(canvas);
         if (newBitmap2 != null) {
             canvas.drawBitmap(newBitmap2, 0, 0, p);
-
         }
         int positiony = activiy.scrHeight >> 1 - 100;
         if (newFrames[0] != null) {
@@ -142,18 +130,16 @@ public class Splash extends View implements Runnable {
     }
 
     public void run() {
+        Log.d(TAG, "testzzw 1111111");
         while (isLoop) {
             logic();
             this.postInvalidate();
             NumCount = NumCount + 1;
             try {
                 Thread.sleep(80);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
+            } catch (InterruptedException e) { // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-
     }
-
 }
